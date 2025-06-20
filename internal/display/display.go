@@ -64,10 +64,9 @@ func PrintLongFormat(info os.FileInfo, fullPath string, config *flags.Config) {
 	}
 
 	size := info.Size()
+	sizeStr := fmt.Sprintf("%6d", size)
 	if config.HumanReadable {
-		sizeS := permissions.HumanReadableSize(size)
-		sizes, _ := strconv.Atoi(sizeS)
-		size = int64(sizes)
+		sizeStr = fmt.Sprintf("%6s", permissions.HumanReadableSize(size))
 	}
 
 	linkTarget := ""
@@ -84,12 +83,12 @@ func PrintLongFormat(info os.FileInfo, fullPath string, config *flags.Config) {
 		}
 	}
 
-	fmt.Printf("%s%s %2d %s%s %s%s %6d %s%s %s%s%s",
+	fmt.Printf("%s%s %2d %s%s %s%s %s %s%s %s%s%s",
 		permColor, permissions.GetPermissions(info.Mode()),
 		nLinks,
 		permColor, owner.Username,
 		permColor, group.Name,
-		size,
+		sizeStr,
 		permColor, info.ModTime().Format("Jan 02 15:04"),
 		fileColor, filepath.Base(fullPath),
 		linkTarget,
